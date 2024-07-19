@@ -34,6 +34,9 @@ public class UserServiceImpl {
         if (password.length() < 8) {
             throw new ValidationException("Password must be at least 8 characters long");
         }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         return "User registered successfully";
